@@ -20,6 +20,10 @@ module PoroGenerator
 
     attr_reader :namespaces, :action_name, :padding, :file_structure
 
+    def insert_class_content
+      ::PoroGenerator::ClassFormatter.new(padding, action_name).format_class_content
+    end
+
     def open_module
       namespaces.each_with_index do |namespace, idx|
         file_structure << padding.increase_by(idx) << module_name(namespace)
@@ -33,11 +37,7 @@ module PoroGenerator
     end
 
     def insert_class
-      file_structure << padding.max_length << class_name_with_content { insert_class_content }
-    end
-
-    def class_name_with_content
-      "class #{action_name.camelize}\n\n#{ yield }\n\n#{padding.max_length}end"
+      file_structure << padding.max_length << insert_class_content
     end
 
     def module_name(namespace)
@@ -46,38 +46,6 @@ module PoroGenerator
       else
         "module #{namespace.capitalize}\n"
       end
-    end
-
-    def insert_class_content
-      String.new.tap do |str|
-        str << insert_initialize
-        str << insert_call
-        str << insert_private
-      end
-    end
-
-    def insert_initialize
-       padding.method_padding << _intialize
-    end
-
-    def _intialize
-      "def initialize\n#{padding.method_padding}end\n\n"
-    end
-
-    def insert_call
-      padding.method_padding << _call
-    end
-
-    def _call
-      "def call\n#{padding.method_padding}end\n\n"
-    end
-
-    def insert_private
-       padding.method_padding << _private
-    end
-
-    def _private
-      "private\n"
     end
 
     def insert_namespaced_initializer
