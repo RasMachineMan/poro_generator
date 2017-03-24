@@ -4,7 +4,7 @@ module PoroGenerator
     def initialize(namespaces:, action_name:)
       @namespaces     = namespaces
       @action_name    = action_name
-      @padding        = Padding.new(namespaces.size)
+      @padding        = ::PoroGenerator::Padding.new(namespaces.size)
       @file_structure = String.new
     end
 
@@ -12,6 +12,7 @@ module PoroGenerator
       open_module
       insert_class
       close_module
+      insert_namespaced_initializer
       file_structure
     end
 
@@ -32,11 +33,11 @@ module PoroGenerator
     end
 
     def insert_class
-      file_structure << padding.max_length << class_name
+      file_structure << padding.max_length << class_name_with_content { insert_class_content }
     end
 
-    def class_name
-      "class #{action_name.capitalize}\n#{padding.max_length}end"
+    def class_name_with_content
+      "class #{action_name.camelize}\n\n#{ yield }\n\n#{padding.max_length}end"
     end
 
     def module_name(namespace)
@@ -44,6 +45,48 @@ module PoroGenerator
         "module #{namespaces_mapping[namespace.to_sym]}\n"
       else
         "module #{namespace.capitalize}\n"
+      end
+    end
+
+    def insert_class_content
+      String.new.tap do |str|
+        str << insert_initialize
+        str << insert_call
+        str << insert_private
+      end
+    end
+
+    def insert_initialize
+       padding.method_padding << _intialize
+    end
+
+    def _intialize
+      "def initialize\n#{padding.method_padding}end\n\n"
+    end
+
+    def insert_call
+      padding.method_padding << _call
+    end
+
+    def _call
+      "def call\n#{padding.method_padding}end\n\n"
+    end
+
+    def insert_private
+       padding.method_padding << _private
+    end
+
+    def _private
+      "private\n"
+    end
+
+    def insert_namespaced_initializer
+      file_structure << "\n\n" << namespaced_initializer
+    end
+
+    def namespaced_initializer
+      namespaces.inject("# ") { |str, n| str << "::" << n.camelize }.tap do |name_init|
+        name_init << "::" << action_name.camelize << ".new()"
       end
     end
 

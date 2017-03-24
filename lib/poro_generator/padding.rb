@@ -17,6 +17,10 @@ module PoroGenerator
       base * namespaces_size
     end
 
+    def method_padding
+      max_length + base
+    end
+
     private
 
     attr_reader :namespaces_size
