@@ -5,20 +5,17 @@ module PoroGenerator
     argument :namespaces,  required: true, type: :array
     # argument :options
 
-    # build destination dynamically, based on the namespaces given
-    # handle error if first namespace not found
-    # handle error if folder, inside namespace, not found
-
     def create_initializer_file
       create_file destination do
-        file_formatter.build
+        file_formatter.call
       end
     end
 
     private
 
     def dir_handler
-      ::PoroGenerator::DirHandler.new(namespaces).path
+      ### Handle the case when there is a namespace error
+      ::PoroGenerator::DirHandler.new(namespaces).call
     end
 
     def file_formatter
@@ -31,6 +28,5 @@ module PoroGenerator
     def destination
       dir_handler << "/#{action_name}.rb"
     end
-
   end
 end

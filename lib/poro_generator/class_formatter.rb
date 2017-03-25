@@ -1,12 +1,16 @@
+require_relative 'tooling'
+
 module PoroGenerator
   class ClassFormatter
+
+    include ::PoroGenerator::Tooling
 
     def initialize(padding, action_name)
       @padding     = padding
       @action_name = action_name
     end
 
-    def format_class_content
+    def call
       class_name_with_content { insert_class_content }
     end
 
@@ -23,7 +27,7 @@ module PoroGenerator
     end
 
     def class_name_with_content
-      "class #{action_name.camelize}\n\n#{ yield }\n\n#{padding.max_length}end"
+      "class #{camelize(action_name)}\n\n#{ yield }\n\n#{padding.max_length}end"
     end
 
     def insert_initialize
