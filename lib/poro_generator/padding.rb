@@ -9,8 +9,8 @@ module PoroGenerator
       base * increaser
     end
 
-    def decrease_by(decreser)
-      end_padding[(decreser * 2)..end_padding.length]
+    def decrease_by(decreaser)
+      end_padding[(decreaser * 2)..end_padding.length]
     end
 
     def max_length

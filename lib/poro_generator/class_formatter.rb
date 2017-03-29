@@ -31,10 +31,10 @@ module PoroGenerator
     end
 
     def insert_initialize
-       padding.method_padding << _intialize
+       padding.method_padding << _initialize
     end
 
-    def _intialize
+    def _initialize
       "def initialize\n#{padding.method_padding}end\n\n"
     end
 

@@ -15,7 +15,7 @@ describe ::PoroGenerator::DirHandler do
     end
   end
 
-  context "with proper top namespace" do
+  context "without proper top namespace" do
 
     let(:namespaces)  { ["create", "users", "admin"] }
     let(:dir_handler) { action.call }
