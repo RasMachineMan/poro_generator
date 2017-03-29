@@ -2,7 +2,7 @@ module PoroGenerator
   class Railtie < Rails::Railtie
 
     generators do
-      require 'services_generator'
+      require 'poro_generator/services_generator'
     end
 
   end
