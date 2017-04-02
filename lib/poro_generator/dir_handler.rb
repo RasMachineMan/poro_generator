@@ -21,12 +21,12 @@ module PoroGenerator
 
     def directory_destination_path
       namespaces[0] = path_namespace_mapping[ top_namespace ]
-      File.join(namespaces[0], namespaces)
+      File.join(rails_root, namespaces[0], namespaces)
     end
 
     def validate_top_namespace
       unless path_namespace_mapping.keys.include? top_namespace
-        namespace_errors << "Top namespace must indicate a type of a service"
+        namespace_errors << error_msg_missing_namespace
       end
     end
 
@@ -34,11 +34,21 @@ module PoroGenerator
       namespaces[0].to_sym
     end
 
+    def rails_root
+      'app/'
+    end
+
+    def error_msg_missing_namespace
+      "Upassss!, Make sure the top namespace indicates a type of a service"
+    end
+
     def path_namespace_mapping
       {
         so: 'service_objects',
         fo: 'form_objects',
-        qo: 'query_objects'
+        qo: 'query_objects',
+        wk: 'workers',
+        rp: 'repositories'
       }
     end
   end

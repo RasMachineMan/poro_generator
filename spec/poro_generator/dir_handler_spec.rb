@@ -3,8 +3,8 @@ require "spec_helper"
 describe ::PoroGenerator::DirHandler do
 
   let(:action)        { described_class.new(namespaces) }
-  let(:expected_path) { "service_objects/service_objects/users/admin" }
-  let(:error)         { "Top namespace must indicate a type of a service" }
+  let(:expected_path) { "app/service_objects/service_objects/users/admin" }
+  let(:error)         { "Upassss!, Make sure the top namespace indicates a type of a service" }
 
   context "with proper top namespace" do
 

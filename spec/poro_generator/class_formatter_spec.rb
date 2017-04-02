@@ -8,7 +8,7 @@ describe ::PoroGenerator::ClassFormatter do
 
   let(:expected_result) do
 
-p %{class Create
+   %{class Create
 
       def initialize
       end

@@ -56,15 +56,8 @@ module PoroGenerator
       file_structure << "\n\n" << namespaced_initializer
     end
 
-    def top_namespace
-      namespaces[0].to_sym
-    end
-
     def namespaced_initializer
-
-      namespaces[0] = namespaces_mapping[ top_namespace ]
-
-      namespaces.inject("# ") { |str, n| str << "::" << camelize(n) }.tap do |name_init|
+      namespaces.inject("# ") { |str, nspc| str << "::" << camelize(nspc) }.tap do |name_init|
         name_init << "::" << camelize(action_name) << ".new()"
       end
     end
@@ -73,7 +66,9 @@ module PoroGenerator
       {
         so: 'ServiceObjects',
         fo: 'FormObjects',
-        qo: 'QueryObjects'
+        qo: 'QueryObjects',
+        wk: 'Workers',
+        rp: 'Repositories'
       }
     end
   end
